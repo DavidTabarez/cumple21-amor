@@ -19,6 +19,19 @@ body{
     background: linear-gradient(to bottom, #ffe6f0, #e6f7ff);
     color:#444;
     text-align:center;
+    overflow-x:hidden;
+}
+
+/* ANIMACIÓN APARECER */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* HERO */
@@ -27,6 +40,8 @@ body{
     padding:30px 15px;
     border-bottom-left-radius:40px;
     border-bottom-right-radius:40px;
+    opacity:0;
+    animation:aparecer 1.2s ease forwards;
 }
 
 .hero-contenido{
@@ -59,12 +74,22 @@ body{
     color:#666;
 }
 
+.edad{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-size:1.1em;
+}
+
+/* TARJETA */
 .card{
     background:white;
     margin:30px 15px;
     padding:25px;
     border-radius:25px;
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    opacity:0;
+    animation:aparecer 1.2s ease forwards;
+    animation-delay:0.5s;
 }
 
 .card h3{
@@ -77,28 +102,41 @@ body{
 .foto{
     position:relative;
     margin-bottom:35px;
+    overflow:visible;
+}
+
+/* FLOTAR */
+@keyframes flotar {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 }
 
 .foto img{
     width:100%;
     border-radius:20px;
     box-shadow:0 8px 20px rgba(255,182,193,0.4);
+    animation: flotar 4s ease-in-out infinite;
+    position:relative;
+    z-index:1;
 }
 
 .foto::before{
     content:"🎀";
     position:absolute;
-    top:-15px;
-    left:-15px;
-    font-size:45px;
+    top:-20px;
+    left:-20px;
+    font-size:50px;
+    z-index:2;
 }
 
 .foto::after{
     content:"✨";
     position:absolute;
-    bottom:-15px;
-    right:-15px;
-    font-size:42px;
+    bottom:-20px;
+    right:-20px;
+    font-size:45px;
+    z-index:2;
 }
 
 .caption{
@@ -108,12 +146,16 @@ body{
     color:#777;
 }
 
+/* MENSAJE */
 .mensaje{
     background:#fff0f6;
     margin:20px 15px 40px 15px;
     padding:25px;
     border-radius:25px;
     box-shadow:0 8px 20px rgba(0,0,0,0.05);
+    opacity:0;
+    animation:aparecer 1.2s ease forwards;
+    animation-delay:1s;
 }
 
 .mensaje h3{
@@ -135,6 +177,17 @@ footer{
     padding:20px;
     font-size:0.9em;
     color:#888;
+    opacity:0;
+    animation:aparecer 1.2s ease forwards;
+    animation-delay:1.5s;
+}
+
+/* CAÍDA DE ELEMENTOS */
+@keyframes caer {
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
 }
 </style>
 </head>
@@ -147,7 +200,7 @@ footer{
         <div class="titulos">
             <h1>Feliz Cumpleaños 💖</h1>
             <h2>Amor</h2>
-            <p class="fecha">💖21🎂</p>
+            <p class="fecha">💖 <span class="edad">21</span> 🎂</p>
         </div>
     </div>
 </header>
@@ -168,7 +221,7 @@ footer{
 
 <section class="mensaje">
     <h3>Para ti 💌</h3>
-    <p>
+    <p>        
         no soy muy bueno, pero espero se vea lindo :)
         no hay palabras para describir lo mucho que te amooo, pero si pudiera describirte con palabras seria
         EL AMOR DE MI VIDA, Te amooo mucho mi bonita, te mando muchos besitos, me encanta lo linda que eres conmigo, lo feliz que soy a tu lado 
@@ -190,9 +243,31 @@ footer{
 </audio>
 
 <script>
+/* Música al primer click */
 document.addEventListener("click", function() {
     document.getElementById("musica").play();
 }, { once: true });
+
+/* Elementos cayendo */
+const simbolos = ["💖","✨","💕"];
+
+function crearElemento() {
+    const elemento = document.createElement("div");
+    elemento.innerHTML = simbolos[Math.floor(Math.random() * simbolos.length)];
+    elemento.style.position = "fixed";
+    elemento.style.left = Math.random() * 100 + "vw";
+    elemento.style.top = "-20px";
+    elemento.style.fontSize = "22px";
+    elemento.style.animation = "caer 4s linear forwards";
+    elemento.style.zIndex = "999";
+    document.body.appendChild(elemento);
+
+    setTimeout(() => {
+        elemento.remove();
+    }, 4000);
+}
+
+setInterval(crearElemento, 600);
 </script>
 
 </body>
